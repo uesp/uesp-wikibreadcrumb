@@ -16,10 +16,12 @@ class UespNamespace
 	// * if ns is NULL, both namespace index and page_title will be taken from parser
 	function __construct($ns_input=NULL, &$parser=NULL, $page_title=NULL )
 	{
-		global $wgContLang, $wgTitle, $wgRequest;
+		global $wgTitle, $wgRequest;
 		
 		//MediaWiki\MediaWikiServices::getContentLanguage
 		//MediaWikiServices::getInstance()->getContentLanguage();
+		
+		$contLang = $this->getContLang();
 		
 		$ns_num = $ns_name = $titleid = $mod_name = NULL;
 		
@@ -57,12 +59,12 @@ class UespNamespace
 		else 
 		{
 				// RH70: Revamped to allow all aliases to work instead of just NS_ID.
-			$ns_num = $wgContLang->getNsIndex( strtr( $ns_input, ' ', '_' ) );
+			$ns_num = $contLang->getNsIndex( strtr( $ns_input, ' ', '_' ) );
 			
 			if ( $ns_num ) 
 			{
 				$ns_num = MWNamespace::getSubject( $ns_num );
-				$ns_name = $wgContLang->getNsText( $ns_num );
+				$ns_name = $contLang->getNsText( $ns_num );
 			}
 			else 
 			{
@@ -80,7 +82,7 @@ class UespNamespace
 			else 
 			{
 				$ns_num = MWNamespace::getSubject( $ns_num );
-				$ns_name = $wgContLang->getNsText( $ns_num );
+				$ns_name = $contLang->getNsText( $ns_num );
 			}
 		}
 
@@ -157,6 +159,20 @@ class UespNamespace
 		// these are in case of future calls using ns_base or ns_id as arguments
 		self::$saved_by_ns[$this->get('ns_base')] = $this;
 		self::$saved_by_ns[$this->get('ns_id')] = $this;
+	}
+	
+	
+	public function getContLang()
+	{
+		global $wgContLang;
+		
+		//MediaWiki\MediaWikiServices::getContentLanguage
+		//MediaWikiServices::getInstance()->getContentLanguage();
+		
+		$contLang = $wgContLang;
+		if ($contLang == null) $contLang = MediaWiki\MediaWikiServices::getInstance()->getContentLanguage();
+		
+		return $contLang;
 	}
 	
 	
@@ -404,10 +420,10 @@ class UespNamespace
 	
 	public static function getRelatedNamespaces( $input_nsnum, &$extratext , &$nsprimary ) 
 	{
-		global $wgContLang;
+		$contLang = $this->getContLang();
 		
-		$subjectspace = $wgContLang->getNsText( MWNamespace::getSubject ( $input_nsnum ));
-		$nssubj = $wgContLang->getNsIndex( $subjectspace );
+		$subjectspace = $contLang->getNsText( MWNamespace::getSubject ( $input_nsnum ));
+		$nssubj = $contLang->getNsIndex( $subjectspace );
 		$extratext = '';
 		
 		$lines = explode( "\n", wfMessage( strtolower(UespMagicWords::SITEID).'namespacelist' )->inContentLanguage()->text() );
@@ -429,7 +445,7 @@ class UespNamespace
 			// if standard wiki namespaces such as Project or Main are added to namespacelist for the sake of
 			//  providing NS_TRAIL or NS_CATEGORY values, then don't want that entry to mess up
 			//  searches
-			if( !is_null( $index=$wgContLang->getNsIndex( $entries[0] ) ) && $index<100) continue;
+			if( !is_null( $index = $contLang->getNsIndex( $entries[0] ) ) && $index<100) continue;
 			
 			if( !array_key_exists( 2, $entries ))
 				$entries[2] = $entries[0];
@@ -455,7 +471,7 @@ class UespNamespace
 			if( $input_nsnum >= 100 )
 			{
 				$namespacelist[] = $nssubj;
-				$namespacelist[] = $wgContLang->getNsIndex( 'Lore' );
+				$namespacelist[] = $contLang->getNsIndex( 'Lore' );
 				$nslist = array();
 			}
 			else 
@@ -489,13 +505,13 @@ class UespNamespace
 			}
 			else 
 			{
-				$nsnum = $wgContLang->getNsIndex( $ns );
+				$nsnum = $contLang->getNsIndex( $ns );
 				if (!is_null( $nsnum )) $namespacelist[] = $nsnum;
 			}
 		}
 		if( !is_null( $parent_ns )) 
 		{
-			$namespacelist[] = $wgContLang->getNsIndex( 'Lore' );
+			$namespacelist[] = $contLang->getNsIndex( 'Lore' );
 			$nsprimary = $input_nsnum;
 		}
 		else
