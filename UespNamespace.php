@@ -18,11 +18,7 @@ class UespNamespace
 	{
 		global $wgTitle, $wgRequest;
 
-		//MediaWiki\MediaWikiServices::getContentLanguage
-		//MediaWikiServices::getInstance()->getContentLanguage();
-
-		$contLang = $this->getContLang();
-
+		$contLang = self::getContLang();
 		$ns_num = $ns_name = $titleid = $mod_name = NULL;
 
 		if (is_null($ns_input)) {
@@ -135,17 +131,13 @@ class UespNamespace
 	}
 
 
-	public function getContLang()
+	public static function getContLang()
 	{
-		global $wgContLang;
-
-		//MediaWiki\MediaWikiServices::getContentLanguage
-		//MediaWikiServices::getInstance()->getContentLanguage();
-
-		$contLang = $wgContLang;
-		if ($contLang == null) $contLang = MediaWiki\MediaWikiServices::getInstance()->getContentLanguage();
-
-		return $contLang;
+		global $wgContLang, $wgVersion;
+		$mwVersion = defined('MW_VERSION') ? constant('MW_VERSION') : $wgVersion;
+		return version_compare($mwVersion, '1.32', '>=')
+			? MediaWiki\MediaWikiServices::getInstance()->getContentLanguage()
+			: $wgContLang;
 	}
 
 
@@ -375,7 +367,7 @@ class UespNamespace
 
 	public static function getRelatedNamespaces($input_nsnum, &$extratext, &$nsprimary)
 	{
-		$contLang = $this->getContLang();
+		$contLang = self::getContLang();
 
 		$subjectspace = $contLang->getNsText(MWNamespace::getSubject($input_nsnum));
 		$nssubj = $contLang->getNsIndex($subjectspace);
