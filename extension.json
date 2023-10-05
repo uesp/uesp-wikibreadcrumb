@@ -23,5 +23,10 @@
 		"OutputPageParserOutput": "UespBreadCrumb::getCachedTrail",
 		"SkinSubPageSubtitle": "UespBreadCrumb::subpageHook"
 	},
+	"MessagesDirs": {
+		"UespBreadCrumb": [
+			"i18n"
+		]
+	},
 	"manifest_version": 1
 }

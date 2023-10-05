@@ -327,32 +327,34 @@ class UespNamespace
 		global $wgTitle, $wgRequest;
 
 		$nschk = NULL;
+		if ($ns === '') {
+			$ns = NULL;
+		}
 
 		if (!is_null($ns) && $ns) {
 			$nschk = $ns;
-		}
-		// not forcing entire extension to be installed... at least not yet
-		elseif (function_exists('efMetaTemplateInit')) {
-			$pstack = new MetaTemplateParserStack($parser, $frame);
-			if (is_null($nschk = $pstack->get('ns_base')) && is_null($nschk = $pstack->get('ns_id'))) $nschk = NULL;
 		} else {
-			$nschk = NULL;
+			$nschk = $frame->getArgument('ns_base');
+			if (!$nschk) {
+				$nschk = $frame->getArgument('ns_id');
+				if (!$nschk) {
+					$nschk = NULL;
+				}
+			}
 		}
-
-		if ($nschk === -1 || $nschk === '-1') $nschk = NULL;
 
 		// if ns not explicitly requested, need to go by article title
 		// but to determine correct ns for article title takes some processing
 		// (to recognize whether article is in a sub-namespace, e.g., Tes3Mod:Tamriel Rebuilt/Filename)
 		// don't want to repeat that processing every time, but can't just assume there's only one
 		// article title (if multiple articles are processed in a single session because of job queue)
-		if (is_null($nschk)) {
+		if (is_null($nschk) || $nschk < 0) {
 			$title = $parser->getTitle();
 
 			// parser's title is invalid; try wgTitle instead
-			if ($title->getArticleID() <= 0 && isset($wgTitle)) $title = $wgTitle;
+			if ($title && $title->getArticleID() <= 0 && isset($wgTitle)) $title = $wgTitle;
 
-			if ($title->getArticleID() <= 0) {
+			if ($title && $title->getArticleID() <= 0) {
 				$tname = $wgRequest->getVal('title');
 				$title = Title::newFromText($tname);
 			}

@@ -102,6 +102,7 @@ class UespMagicWords
 		if (array_key_exists($magicWordId, self::$egSiteNamespaceMagicWords)) {
 			$ret = UespNamespace::find_nsobj($parser, $frame)->get(strtolower($magicWordId));
 			$variableCache[$magicWordId] = $ret;
+			$parser->addTrackingCategory('uespbreadcrumb-tracking-deprecated');
 		} elseif ($magicWordId == self::MAG_SITE_CORENAME) {
 			$ret = self::implementCorename($parser);
 			$variableCache[$magicWordId] = $ret;
