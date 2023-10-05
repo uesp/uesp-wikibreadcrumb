@@ -1,9 +1,9 @@
 <?php
 
 $messages = array();
- 
+
 /* *** English *** */
 $messages['en'] = array(
-		'sitesettrail' => '1',
-		'sitetrailseparator' => ': ',
+	'sitesettrail' => '1',
+	'sitetrailseparator' => ': ',
 );
