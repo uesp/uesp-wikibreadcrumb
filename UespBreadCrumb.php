@@ -235,7 +235,12 @@ class UespBreadCrumb
 	// Use parserOutput->mProperties to allow customized information to be cached
 	public static function getCachedTrail( &$out, $parserout )
 	{
-		if ($trail = $parserout->getProperty('breadCrumbTrail'))
+		if ( method_exists( $parserout, 'getPageProperty' ) )
+			$trail = $parserout->getPageProperty('breadCrumbTrail');
+		else
+			$trail = $parserout->getProperty('breadCrumbTrail');
+			
+		if ($trail)
 		{
 			$object = self::newFromWgTitle(true);
 			$object->_fulltrail = $trail;

@@ -14,6 +14,6 @@ dest = content1.uesp.net:/home/sfwiki/www/w/extensions/UespBreadCrumb/
 dest = content2.uesp.net:/home/sfwiki/www/w/extensions/UespBreadCrumb/
 dest = content3.uesp.net:/home/sfwiki/www/w/extensions/UespBreadCrumb/
 
-# destname = [backup]backup1.uesp.net:/home/uesp/www/w/extensions/UespBreadCrumb/
-# destname = [dev]content3.uesp.net:/home/uesp/dev/www/w/extensions/UespBreadCrumb/
+destname = [backup]backup1.uesp.net:/home/sfwiki/www/w/extensions/UespBreadCrumb/
+destname = [dev]content3.uesp.net:/home/sfwiki/dev/www/w/extensions/UespBreadCrumb/
 
