@@ -8,20 +8,25 @@
 	"license-name": "MIT",
 	"type": "other",
 	"AutoloadClasses": {
-		"UespMagicWords" : "UespMagicWords.php",
-		"UespBreadCrumb" : "UespBreadCrumb.php",
-		"UespNamespace"  : "UespNamespace.php"
+		"UespMagicWords": "UespMagicWords.php",
+		"UespBreadCrumb": "UespBreadCrumb.php",
+		"UespNamespace": "UespNamespace.php"
 	},
 	"ExtensionMessagesFiles": {
 		"BreadCrumb": "BreadCrumb.i18n.php",
 		"BreadCrumbMagic": "BreadCrumb.i18n.magic.php"
 	},
 	"Hooks": {
-		"ParserFirstCallInit" : "UespMagicWords::InitFunctionHooks",
+		"ParserFirstCallInit": "UespMagicWords::InitFunctionHooks",
 		"GetMagicVariableIDs": "UespMagicWords::onGetMagicVariableIDs",
-		"ParserGetVariableValueSwitch" : "UespMagicWords::onParserGetVariableValueSwitch",
-		"OutputPageParserOutput" : "UespBreadCrumb::getCachedTrail",
-		"SkinSubPageSubtitle" : "UespBreadCrumb::subpageHook"
+		"ParserGetVariableValueSwitch": "UespMagicWords::onParserGetVariableValueSwitch",
+		"OutputPageParserOutput": "UespBreadCrumb::getCachedTrail",
+		"SkinSubPageSubtitle": "UespBreadCrumb::subpageHook"
+	},
+	"MessagesDirs": {
+		"UespBreadCrumb": [
+			"i18n"
+		]
 	},
 	"manifest_version": 1
 }
