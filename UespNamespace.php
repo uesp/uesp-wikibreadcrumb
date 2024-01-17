@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 
 class UespNamespace
 {
@@ -39,6 +41,8 @@ class UespNamespace
 			$ns_num = $title->getNamespace();
 			$titleid = $title->getArticleID();
 			$mod_name = $title->getText();
+			
+			$nsInfo = MediaWikiServices::getInstance()->getNamespaceInfo();
 
 			if ($i = stripos($mod_name, '/')) $mod_name = substr($mod_name, 0, $i);
 		} elseif (is_int($ns_input)) {
@@ -50,7 +54,8 @@ class UespNamespace
 			$ns_num = $contLang->getNsIndex(strtr($ns_input, ' ', '_'));
 
 			if ($ns_num) {
-				$ns_num = MWNamespace::getSubject($ns_num);
+				//$ns_num = MWNamespace::getSubject($ns_num);
+				$ns_num = $nsInfo->getSubject($ns_num);
 				$ns_name = $contLang->getNsText($ns_num);
 			} else {
 				$ns_name = $ns_input;
@@ -62,7 +67,8 @@ class UespNamespace
 				$ns_num = 0;
 				$ns_name = '';
 			} else {
-				$ns_num = MWNamespace::getSubject($ns_num);
+				//$ns_num = MWNamespace::getSubject($ns_num);
+				$ns_num = $nsInfo->getSubject($ns_num);
 				$ns_name = $contLang->getNsText($ns_num);
 			}
 		}

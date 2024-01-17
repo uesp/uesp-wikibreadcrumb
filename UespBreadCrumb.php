@@ -177,17 +177,17 @@ class UespBreadCrumb
 	public function finishTrail(&$parser, &$text)
 	{
 		$dotrail = wfMessage(strtolower(UespMagicWords::SITEID) . 'settrail')->inContentLanguage()->text();
-
+		
 		if (!$dotrail) return true;
 		if (is_null($trail = $this->_trailtext)) return true;
-
+		
 		// clear trail so that next call to this function doesn't repeat the processing
 		$this->_trailtext = NULL;
 		if (!$trail) return true;
-
+		
 		// never display bread crumb trail on template pages
 		if ($parser->getTitle()->getNamespace() == NS_TEMPLATE) return true;
-
+		
 		// convert trail from wikitext to HTML
 		$trail = $parser->recursiveTagParse($trail);
 		// necessary to actually insert the links into the text
@@ -195,24 +195,27 @@ class UespBreadCrumb
 		$trail = '&lt;&nbsp;' . $trail;
 		// save processed trail to a different variable, so it can be accessed by subpageHook
 		$this->_fulltrail = $trail;
-
-		$parser->getOutput()->setProperty('breadCrumbTrail', $trail);
-
+		
+		if ( method_exists( $parser, 'setPageProperty' ) )
+			$parser->getOutput()->setPageProperty('breadCrumbTrail', $trail);
+		else
+			$parser->getOutput()->setProperty('breadCrumbTrail', $trail);
+		
 		return true;
 	}
-
-
+	
+	
 	// display bread crumb trail in subpage location
 	public static function subpageHook(&$subpage)
 	{
 		$dotrail = wfMessage(strtolower(UespMagicWords::SITEID) . 'settrail')->inContentLanguage()->text();
-
+		
 		// only use bread crumb trail if feature is enabled and if trail has been set
 		if ($dotrail && (!is_null($object = self::newFromWgTitle())) && !is_null($object->_fulltrail)) {
 			$subpage = $object->_fulltrail;
 			return false;
 		}
-
+		
 		// otherwise do default processing
 		return true;
 	}
@@ -231,7 +234,7 @@ class UespBreadCrumb
 			$object = self::newFromWgTitle(true);
 			$object->_fulltrail = $trail;
 		}
-
+		
 		// Even more hacking... if Subtitle is completely empty, the empty <div id='subContent'></div>
 		// tags mess up the location of siteSub, when siteSub is set to float:right (the siteSub tag
 		// is displaced vertically). Forcing a nbsp to be displayed fixes the problem
