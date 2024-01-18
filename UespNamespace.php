@@ -19,10 +19,12 @@ class UespNamespace
 	function __construct($ns_input = NULL, &$parser = NULL, $page_title = NULL)
 	{
 		global $wgTitle, $wgRequest;
-
+		
 		$contLang = self::getContLang();
 		$ns_num = $ns_name = $titleid = $mod_name = NULL;
-
+		
+		$nsInfo = MediaWikiServices::getInstance()->getNamespaceInfo();
+		
 		if (is_null($ns_input)) {
 			$title = $parser->getTitle();
 
@@ -42,8 +44,6 @@ class UespNamespace
 			$titleid = $title->getArticleID();
 			$mod_name = $title->getText();
 			
-			$nsInfo = MediaWikiServices::getInstance()->getNamespaceInfo();
-
 			if ($i = stripos($mod_name, '/')) $mod_name = substr($mod_name, 0, $i);
 		} elseif (is_int($ns_input)) {
 			$ns_num = $ns_input;
@@ -52,7 +52,7 @@ class UespNamespace
 		} else {
 			// RH70: Revamped to allow all aliases to work instead of just NS_ID.
 			$ns_num = $contLang->getNsIndex(strtr($ns_input, ' ', '_'));
-
+			
 			if ($ns_num) {
 				//$ns_num = MWNamespace::getSubject($ns_num);
 				$ns_num = $nsInfo->getSubject($ns_num);
@@ -61,7 +61,7 @@ class UespNamespace
 				$ns_name = $ns_input;
 			}
 		}
-
+		
 		if (is_null($ns_name) && !is_null($ns_num)) {
 			if ($ns_num === 0 || $ns_num === 1) {
 				$ns_num = 0;
