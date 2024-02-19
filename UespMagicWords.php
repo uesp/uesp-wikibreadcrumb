@@ -26,7 +26,7 @@ class UespMagicWords
 	const SITEID = "Site";
 
 	public static $egSiteNamespaceMagicWords = array(
-		self::MAG_SITE_NS_BASE => 1,
+/*		self::MAG_SITE_NS_BASE => 1,
 		self::MAG_SITE_NS_NAME => 1,
 		self::MAG_SITE_NS_FULL => 1,
 		self::MAG_SITE_NS_PARENT => 1,
@@ -34,7 +34,7 @@ class UespMagicWords
 		self::MAG_SITE_NS_CATEGORY => 1,
 		self::MAG_SITE_NS_TRAIL => 1,
 		self::MAG_SITE_NS_ID => 1,
-		self::MAG_SITE_MOD_NAME => 1
+		self::MAG_SITE_MOD_NAME => 1 */
 	);
 
 	public static $egSiteOtherMagicWords = array(
@@ -73,15 +73,15 @@ class UespMagicWords
 		$parser->setFunctionHook(self::MAG_SITE_ADDTOTRAIL, array('UespBreadCrumb', 'implementAddToTrail'), $hookoption);
 
 		// parser function versions of Namespace variables (e.g., {{NS_FULL:SI}}, instead of just {{NS_FULL}})
-		$parser->setFunctionHook(self::MAG_SITE_NS_BASE, array('UespNamespace', 'parser_get_ns_base'), SFH_NO_HASH | $hookoption);
-		$parser->setFunctionHook(self::MAG_SITE_NS_FULL, array('UespNamespace', 'parser_get_ns_full'), SFH_NO_HASH | $hookoption);
-		$parser->setFunctionHook(self::MAG_SITE_MOD_NAME, array('UespNamespace', 'parser_get_mod_name'), SFH_NO_HASH | $hookoption);
-		$parser->setFunctionHook(self::MAG_SITE_NS_ID, array('UespNamespace', 'parser_get_ns_id'), SFH_NO_HASH | $hookoption);
-		$parser->setFunctionHook(self::MAG_SITE_NS_PARENT, array('UespNamespace', 'parser_get_ns_parent'), SFH_NO_HASH | $hookoption);
-		$parser->setFunctionHook(self::MAG_SITE_NS_NAME, array('UespNamespace', 'parser_get_ns_name'), SFH_NO_HASH | $hookoption);
-		$parser->setFunctionHook(self::MAG_SITE_NS_MAINPAGE, array('UespNamespace', 'parser_get_ns_mainpage'), SFH_NO_HASH | $hookoption);
-		$parser->setFunctionHook(self::MAG_SITE_NS_CATEGORY, array('UespNamespace', 'parser_get_ns_category'), SFH_NO_HASH | $hookoption);
-		$parser->setFunctionHook(self::MAG_SITE_NS_TRAIL, array('UespNamespace', 'parser_get_ns_trail'), SFH_NO_HASH | $hookoption);
+		#$parser->setFunctionHook(self::MAG_SITE_NS_BASE, array('UespNamespace', 'parser_get_ns_base'), SFH_NO_HASH | $hookoption);
+		#$parser->setFunctionHook(self::MAG_SITE_NS_FULL, array('UespNamespace', 'parser_get_ns_full'), SFH_NO_HASH | $hookoption);
+		#$parser->setFunctionHook(self::MAG_SITE_MOD_NAME, array('UespNamespace', 'parser_get_mod_name'), SFH_NO_HASH | $hookoption);
+		#$parser->setFunctionHook(self::MAG_SITE_NS_ID, array('UespNamespace', 'parser_get_ns_id'), SFH_NO_HASH | $hookoption);
+		#$parser->setFunctionHook(self::MAG_SITE_NS_PARENT, array('UespNamespace', 'parser_get_ns_parent'), SFH_NO_HASH | $hookoption);
+		#$parser->setFunctionHook(self::MAG_SITE_NS_NAME, array('UespNamespace', 'parser_get_ns_name'), SFH_NO_HASH | $hookoption);
+		#$parser->setFunctionHook(self::MAG_SITE_NS_MAINPAGE, array('UespNamespace', 'parser_get_ns_mainpage'), SFH_NO_HASH | $hookoption);
+		#$parser->setFunctionHook(self::MAG_SITE_NS_CATEGORY, array('UespNamespace', 'parser_get_ns_category'), SFH_NO_HASH | $hookoption);
+		#$parser->setFunctionHook(self::MAG_SITE_NS_TRAIL, array('UespNamespace', 'parser_get_ns_trail'), SFH_NO_HASH | $hookoption);
 	}
 
 

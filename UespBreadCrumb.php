@@ -103,7 +103,7 @@ class UespBreadCrumb
 	protected function initialize($use_ns = true)
 	{
 		if ($use_ns)
-			$this->_trailtext = UespNamespace::parser_get_value($this->_parser, 'ns_trail', $this->_frame, $this->_trailns);
+            $this->_trailtext = '{{NS_TRAIL:' . $this->_trailns . '}}';
 		else
 			$this->_trailtext = '';
 	}
@@ -114,7 +114,7 @@ class UespBreadCrumb
 		foreach ($data as $text) {
 			if (!$text) continue;
 
-			if (strpos($text, '[[') === false) $text = '[[:' . UespNamespace::parser_get_value($this->_parser, 'ns_full', $this->_frame, $this->_trailns) . $text . '|' . $text . ']]';
+			if (strpos($text, '[[') === false) $text = "[[:{{NS_FULL:{$this->_trailns}}}$text|$text]]";
 			if ($this->_trailtext != '') $this->_trailtext .= $separator;
 			$this->_trailtext .= $text;
 		}
