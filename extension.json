@@ -9,8 +9,7 @@
 	"type": "other",
 	"AutoloadClasses": {
 		"UespMagicWords": "UespMagicWords.php",
-		"UespBreadCrumb": "UespBreadCrumb.php",
-		"UespNamespace": "UespNamespace.php"
+		"UespBreadCrumb": "UespBreadCrumb.php"
 	},
 	"ExtensionMessagesFiles": {
 		"BreadCrumb": "BreadCrumb.i18n.php",

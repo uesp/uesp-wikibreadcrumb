@@ -5,15 +5,6 @@
 class UespMagicWords
 {
 	/* Note that these should match the words in the i18n file */
-	const MAG_SITE_NS_BASE = 'NS_BASE';
-	const MAG_SITE_NS_NAME = 'NS_NAME';
-	const MAG_SITE_NS_FULL = 'NS_FULL';
-	const MAG_SITE_NS_PARENT = 'NS_PARENT';
-	const MAG_SITE_NS_MAINPAGE = 'NS_MAINPAGE';
-	const MAG_SITE_NS_CATEGORY = 'NS_CATEGORY';
-	const MAG_SITE_NS_TRAIL = 'NS_TRAIL';
-	const MAG_SITE_NS_ID = 'NS_ID';
-	const MAG_SITE_MOD_NAME = 'MOD_NAME';
 	const MAG_SITE_CORENAME = 'CORENAME';
 	const MAG_SITE_SORTABLECORENAME = 'SORTABLECORENAME';
 	const MAG_SITE_LABELNAME = 'LABELNAME';
@@ -24,18 +15,6 @@ class UespMagicWords
 	const MAG_SITE_ADDTOTRAIL = 'addtotrail';
 
 	const SITEID = "Site";
-
-	public static $egSiteNamespaceMagicWords = array(
-/*		self::MAG_SITE_NS_BASE => 1,
-		self::MAG_SITE_NS_NAME => 1,
-		self::MAG_SITE_NS_FULL => 1,
-		self::MAG_SITE_NS_PARENT => 1,
-		self::MAG_SITE_NS_MAINPAGE => 1,
-		self::MAG_SITE_NS_CATEGORY => 1,
-		self::MAG_SITE_NS_TRAIL => 1,
-		self::MAG_SITE_NS_ID => 1,
-		self::MAG_SITE_MOD_NAME => 1 */
-	);
 
 	public static $egSiteOtherMagicWords = array(
 		self::MAG_SITE_CORENAME => 0,
@@ -71,25 +50,12 @@ class UespMagicWords
 		$parser->setFunctionHook(self::MAG_SITE_INITTRAIL, array('UespBreadCrumb', 'implementInitTrail'), $hookoption);
 		$parser->setFunctionHook(self::MAG_SITE_SETTRAIL, array('UespBreadCrumb', 'implementSetTrail'), $hookoption);
 		$parser->setFunctionHook(self::MAG_SITE_ADDTOTRAIL, array('UespBreadCrumb', 'implementAddToTrail'), $hookoption);
-
-		// parser function versions of Namespace variables (e.g., {{NS_FULL:SI}}, instead of just {{NS_FULL}})
-		#$parser->setFunctionHook(self::MAG_SITE_NS_BASE, array('UespNamespace', 'parser_get_ns_base'), SFH_NO_HASH | $hookoption);
-		#$parser->setFunctionHook(self::MAG_SITE_NS_FULL, array('UespNamespace', 'parser_get_ns_full'), SFH_NO_HASH | $hookoption);
-		#$parser->setFunctionHook(self::MAG_SITE_MOD_NAME, array('UespNamespace', 'parser_get_mod_name'), SFH_NO_HASH | $hookoption);
-		#$parser->setFunctionHook(self::MAG_SITE_NS_ID, array('UespNamespace', 'parser_get_ns_id'), SFH_NO_HASH | $hookoption);
-		#$parser->setFunctionHook(self::MAG_SITE_NS_PARENT, array('UespNamespace', 'parser_get_ns_parent'), SFH_NO_HASH | $hookoption);
-		#$parser->setFunctionHook(self::MAG_SITE_NS_NAME, array('UespNamespace', 'parser_get_ns_name'), SFH_NO_HASH | $hookoption);
-		#$parser->setFunctionHook(self::MAG_SITE_NS_MAINPAGE, array('UespNamespace', 'parser_get_ns_mainpage'), SFH_NO_HASH | $hookoption);
-		#$parser->setFunctionHook(self::MAG_SITE_NS_CATEGORY, array('UespNamespace', 'parser_get_ns_category'), SFH_NO_HASH | $hookoption);
-		#$parser->setFunctionHook(self::MAG_SITE_NS_TRAIL, array('UespNamespace', 'parser_get_ns_trail'), SFH_NO_HASH | $hookoption);
 	}
 
 
 	public static function onGetMagicVariableIDs(&$variableIDs)
 	{
-		$allCustomMagicWords = array_merge(self::$egSiteNamespaceMagicWords, self::$egSiteOtherMagicWords);
-
-		foreach ($allCustomMagicWords as $magicword => $case) {
+		foreach (self::$egSiteOtherMagicWords as $magicword => $case) {
 			$variableIDs[] = $magicword;
 		}
 
@@ -99,11 +65,7 @@ class UespMagicWords
 
 	public static function onParserGetVariableValueSwitch($parser, &$variableCache, $magicWordId, &$ret, $frame)
 	{
-		if (array_key_exists($magicWordId, self::$egSiteNamespaceMagicWords)) {
-			$ret = UespNamespace::find_nsobj($parser, $frame)->get(strtolower($magicWordId));
-			$variableCache[$magicWordId] = $ret;
-			$parser->addTrackingCategory('uespbreadcrumb-tracking-deprecated');
-		} elseif ($magicWordId == self::MAG_SITE_CORENAME) {
+		if ($magicWordId == self::MAG_SITE_CORENAME) {
 			$ret = self::implementCorename($parser);
 			$variableCache[$magicWordId] = $ret;
 		} elseif ($magicWordId == self::MAG_SITE_LABELNAME) {
@@ -116,7 +78,6 @@ class UespMagicWords
 
 		return true;
 	}
-
 
 	// Implementation of CORENAME magic word (also used by SORTABLECORENAME and LABELNAME magic words)
 	public static function implementCorename(&$parser, $page_title = NULL)
