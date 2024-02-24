@@ -17,8 +17,6 @@
 	},
 	"Hooks": {
 		"ParserFirstCallInit": "UespMagicWords::InitFunctionHooks",
-		"GetMagicVariableIDs": "UespMagicWords::onGetMagicVariableIDs",
-		"ParserGetVariableValueSwitch": "UespMagicWords::onParserGetVariableValueSwitch",
 		"OutputPageParserOutput": "UespBreadCrumb::getCachedTrail",
 		"SkinSubPageSubtitle": "UespBreadCrumb::subpageHook"
 	},
