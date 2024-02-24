@@ -123,6 +123,7 @@ class UespBreadCrumb
 
 	public static function implementInitTrail(&$parser)
 	{
+		/** @var UespBreadCrumb $object */
 		$object = self::newFromParser($parser);
 		$args = func_get_args();
 		array_shift($args);
@@ -138,6 +139,7 @@ class UespBreadCrumb
 
 	public static function implementSetTrail(&$parser)
 	{
+		/** @var UespBreadCrumb $object */
 		$object = self::newFromParser($parser);
 		$args = func_get_args();
 		array_shift($args);
@@ -156,6 +158,7 @@ class UespBreadCrumb
 
 	public static function implementAddToTrail(&$parser)
 	{
+		/** @var UespBreadCrumb $object */
 		$object = self::newFromParser($parser);
 		$args = func_get_args();
 		array_shift($args);
