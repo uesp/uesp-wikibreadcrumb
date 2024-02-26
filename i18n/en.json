@@ -1,0 +1,13 @@
+{
+	"@metadata": {
+		"authors": [
+			"Daveh",
+			"Nephele",
+			"RobinHood70"
+		]
+	},
+	"breadcrumb-trailadd": "[[:{{NS_FULL:$1}}$2|$2]]",
+	"breadcrumb-trailinit": "{{NS_TRAIL:$1}}",
+	"breadcrumb-trailprefix": "< ",
+	"breadcrumb-trailseparator": ": "
+}
