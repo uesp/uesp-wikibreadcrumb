@@ -40,9 +40,9 @@ class BreadCrumbHooks
 
 	public static function onParserFirstCallInit(Parser $parser)
 	{
-		$parser->setFunctionHook(self::PF_ADDTOTRAIL, [BreadCrumb::class, 'doAddToTrail'], SFH_OBJECT_ARGS);
-		$parser->setFunctionHook(self::PF_INITTRAIL, [BreadCrumb::class, 'doInitTrail'], SFH_OBJECT_ARGS);
-		$parser->setFunctionHook(self::PF_SETTRAIL, [BreadCrumb::class, 'doSetTrail'], SFH_OBJECT_ARGS);
+		$parser->setFunctionHook(self::PF_ADDTOTRAIL, [BreadCrumb::class, 'doAddToTrail'], Parser::SFH_OBJECT_ARGS);
+		$parser->setFunctionHook(self::PF_INITTRAIL, [BreadCrumb::class, 'doInitTrail'], Parser::SFH_OBJECT_ARGS);
+		$parser->setFunctionHook(self::PF_SETTRAIL, [BreadCrumb::class, 'doSetTrail'], Parser::SFH_OBJECT_ARGS);
 	}
 
 	public static function onSkinSubPageSubtitle(string &$subpages, Skin $skin, OutputPage $out)
