@@ -142,12 +142,12 @@ class BreadCrumb
 		/** @var array $values */
 		[$magicArgs, $values] = ParserHelper::getMagicArgs($frame, $args, $magicWords);
 
-		if (!ParserHelper::checkIfs($frame, $magicArgs)) {
+		if (!ParserHelper::checkIfs($magicArgs)) {
 			return null;
 		}
 
 		if (isset($magicArgs[self::NA_NS_BASE])) {
-			$nsBase = trim($frame->expand($magicArgs[self::NA_NS_BASE]));
+			$nsBase = $magicArgs[self::NA_NS_BASE];
 		} else {
 			$nsBase = $parser->getOutput()->getExtensionData(self::VAL_NSROOT) ??
 				$helper->getContentLanguage()->getNsText($parserNs ?? 0);
