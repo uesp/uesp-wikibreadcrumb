@@ -141,6 +141,11 @@ class BreadCrumb
 		/** @var array $magicArgs */
 		/** @var array $values */
 		[$magicArgs, $values] = ParserHelper::getMagicArgs($frame, $args, $magicWords);
+		foreach ($values as &$value) {
+			$value = $frame->expand($value);
+		}
+
+		unset($value);
 
 		if (!ParserHelper::checkIfs($magicArgs)) {
 			return null;
@@ -170,14 +175,14 @@ class BreadCrumb
 
 	private static function setTrail(Parser $parser, PPFrame $frame, array $args, bool $addRoot): void
 	{
-		$parser->getOutput()->setExtensionData(self::VAL_NSROOT, null);
-		$parser->getOutput()->setExtensionData(self::VAL_TRAIL, null);
+		$output = $parser->getOutput();
+		$output->setExtensionData(self::VAL_NSROOT, null);
+		$output->setExtensionData(self::VAL_TRAIL, null);
 		[$nsBase, $separator, $values] = self::getArgs($parser, $frame, $args);
 		if (is_null($nsBase)) {
 			return;
 		}
 
-		$output = $parser->getOutput();
 		$output->setExtensionData(self::VAL_NSROOT, $nsBase);
 
 		if ($addRoot) {
