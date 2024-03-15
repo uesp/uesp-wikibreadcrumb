@@ -95,11 +95,7 @@ class BreadCrumb
 		// The best way used to be recursiveTagParse() followed by replaceLinkHolders() but the latter is now
 		// deprecated, so we use Fully and try to compensate for the additional HTML it adds.
 		$retval = $parser->recursiveTagParseFully($value, false);
-		if (substr($retval, 0, 3) === '<p>' && substr($retval, -5, 5) === "\n</p>") {
-			$retval = substr($retval, 3, strlen($retval) - 8);
-		}
-
-		return $retval;
+		return str_replace(['<p>', '</p>', "\n"], '', $retval);
 	}
 	#endregion
 
