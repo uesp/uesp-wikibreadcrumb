@@ -85,18 +85,6 @@ class BreadCrumb
 	{
 		return self::getConfig()->get($setting);
 	}
-
-	public static function parse(Parser $parser, string $value)
-	{
-		// While this could use a frame in theory, in practice, this might produce unexpected results. In the case of
-		// NSInfo's NS_ commands, we can simply pass {{NS_BASE}} as the ns, as ns doesn't care in the slightest whether
-		// the ns name is actually a namespace or something else, like a pseudo-space name.
-
-		// The best way used to be recursiveTagParse() followed by replaceLinkHolders() but the latter is now
-		// deprecated, so we use Fully and try to compensate for the additional HTML it adds.
-		$retval = $parser->recursiveTagParseFully($value, false);
-		return str_replace(['<p>', '</p>', "\n"], '', $retval);
-	}
 	#endregion
 
 	#region Private Static Functions
@@ -182,7 +170,8 @@ class BreadCrumb
 
 		if ($addRoot) {
 			$root = wfMessage('breadcrumb-trailinit', $nsBase)->inContentLanguage()->plain();
-			$rootCheck = self::parse($parser, $root);
+			$rootDom = $parser->preprocessToDom($root, Parser::PTD_FOR_INCLUSION);
+			$rootCheck = trim($frame->expand($rootDom));
 			if ($rootCheck !== '') {
 				$output->setExtensionData(self::VAL_TRAIL, self::getPrefix() . $root);
 			}

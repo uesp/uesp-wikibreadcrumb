@@ -22,7 +22,10 @@ class BreadCrumbHooks
 		$output = $parser->getOutput();
 		$trail = $output->getExtensionData(BreadCrumb::VAL_TRAIL) ?? '';
 		if ($trail !== '') {
-			$parsed = BreadCrumb::parse($parser, $trail);
+			// The best way used to be recursiveTagParse() followed by replaceLinkHolders() but the latter is now
+			// deprecated, so we use Fully and try to compensate for the additional HTML it adds.
+			$retval = $parser->recursiveTagParseFully($trail, false);
+			$parsed = str_replace(['<p>', '</p>', "\n"], '', $retval);
 			$output->setExtensionData(BreadCrumb::VAL_TRAIL, $parsed);
 			switch (BreadCrumb::getSetting(BreadCrumb::STTNG_SAVEAS)) {
 				case 'wiki':
