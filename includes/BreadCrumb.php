@@ -4,7 +4,7 @@ use MediaWiki\MediaWikiServices;
 
 class BreadCrumb
 {
-	public const NA_NS_BASE    = 'breadcrumb-ns_base';
+	public const NA_NS    = 'breadcrumb-ns';
 	public const STTNG_SAVEAS = 'SavePropertyAs';
 	public const VAL_TRAIL = 'breadCrumbTrail';
 
@@ -31,9 +31,9 @@ class BreadCrumb
 
 	public static function doAddToTrail(Parser $parser, PPFrame $frame, array $args)
 	{
-		[$nsBase, $separator, $values] = self::getArgs($parser, $frame, $args);
+		[$ns, $separator, $values] = self::getArgs($parser, $frame, $args);
 		if (isset($values)) {
-			self::addToTrail($parser, $nsBase, $separator, $values);
+			self::addToTrail($parser, $ns, $separator, $values);
 		}
 
 		return '';
@@ -116,7 +116,7 @@ class BreadCrumb
 
 		static $magicWords;
 		$magicWords = $magicWords ?? new MagicWordArray([
-			self::NA_NS_BASE,
+			self::NA_NS,
 			ParserHelper::NA_IF,
 			ParserHelper::NA_IFNOT,
 			ParserHelper::NA_SEPARATOR
@@ -135,18 +135,18 @@ class BreadCrumb
 			return null;
 		}
 
-		$nsBase = $magicArgs[self::NA_NS_BASE] ??
+		$ns = $magicArgs[self::NA_NS] ??
 			$parser->getOutput()->getExtensionData(self::VAL_NSROOT) ??
 			wfMessage('breadcrumb-defaultns')->inContentLanguage()->plain();
-		$nsDom = $parser->preprocessToDom($nsBase, Parser::PTD_FOR_INCLUSION);
-		$nsBase = $frame->expand($nsDom);
+		$nsDom = $parser->preprocessToDom($ns, Parser::PTD_FOR_INCLUSION);
+		$ns = $frame->expand($nsDom);
 
 		$separator = isset($magicArgs[ParserHelper::NA_SEPARATOR])
 			? ParserHelper::getSeparator($magicArgs)
 			: wfMessage(self::MSG_SEP)->inContentLanguage()->plain();
 		$separator = str_replace(':', '&#058;', $separator);
 
-		return [$nsBase, $separator, $values];
+		return [$ns, $separator, $values];
 	}
 
 	private static function getPrefix(): string
@@ -161,15 +161,15 @@ class BreadCrumb
 		$output = $parser->getOutput();
 		$output->setExtensionData(self::VAL_NSROOT, null);
 		$output->setExtensionData(self::VAL_TRAIL, null);
-		[$nsBase, $separator, $values] = self::getArgs($parser, $frame, $args);
-		if (is_null($nsBase)) {
+		[$ns, $separator, $values] = self::getArgs($parser, $frame, $args);
+		if (is_null($ns)) {
 			return;
 		}
 
-		$output->setExtensionData(self::VAL_NSROOT, $nsBase);
+		$output->setExtensionData(self::VAL_NSROOT, $ns);
 
 		if ($addRoot) {
-			$root = wfMessage('breadcrumb-trailinit', $nsBase)->inContentLanguage()->plain();
+			$root = wfMessage('breadcrumb-trailinit', $ns)->inContentLanguage()->plain();
 			$rootDom = $parser->preprocessToDom($root, Parser::PTD_FOR_INCLUSION);
 			$rootCheck = trim($frame->expand($rootDom));
 			if ($rootCheck !== '') {
@@ -177,6 +177,6 @@ class BreadCrumb
 			}
 		}
 
-		self::addToTrail($parser, $nsBase, $separator, $values);
+		self::addToTrail($parser, $ns, $separator, $values);
 	}
 };
