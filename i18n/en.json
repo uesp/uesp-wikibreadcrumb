@@ -6,7 +6,8 @@
 			"RobinHood70"
 		]
 	},
-	"breadcrumb-trailadd": "[[:$1$2|$2]]",
+	"breadcrumb-defaultns": "{{NAMESPACE}}",
+	"breadcrumb-trailadd": "[[$1:$2|$2]]",
 	"breadcrumb-trailinit": "",
 	"breadcrumb-trailprefix": "< ",
 	"breadcrumb-trailseparator": ": "
