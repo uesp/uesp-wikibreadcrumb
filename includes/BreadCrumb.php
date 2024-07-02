@@ -147,12 +147,11 @@ class BreadCrumb
 			return null;
 		}
 
-		if (isset($magicArgs[self::NA_NS_BASE])) {
-			$nsBase = $magicArgs[self::NA_NS_BASE];
-		} else {
-			$nsBase = $parser->getOutput()->getExtensionData(self::VAL_NSROOT) ??
-				$helper->getContentLanguage()->getNsText($parserNs ?? 0);
-		}
+		$nsBase = $magicArgs[self::NA_NS_BASE] ??
+			$parser->getOutput()->getExtensionData(self::VAL_NSROOT) ??
+			wfMessage('breadcrumb-defaultns')->inContentLanguage()->plain();
+		$nsDom = $parser->preprocessToDom($nsBase, Parser::PTD_FOR_INCLUSION);
+		$nsBase = $frame->expand($nsDom);
 
 		$separator = isset($magicArgs[ParserHelper::NA_SEPARATOR])
 			? ParserHelper::getSeparator($magicArgs)
